@@ -2,8 +2,10 @@
 
 namespace App\Livewire\User;
 
+use Throwable;
 use App\Models\User;
 use Livewire\Component;
+use Livewire\Attributes\On;
 use Livewire\WithPagination;
 use Livewire\Attributes\Lazy;
 use App\Trait\Datatable\PerPage;
@@ -11,12 +13,16 @@ use App\Trait\Datatable\Sortable;
 use Livewire\Attributes\Computed;
 use Livewire\WithoutUrlPagination;
 use App\Trait\Datatable\Searchable;
+use App\Livewire\Forms\User\UserForm;
 
 #[Lazy]
 class UserDatatable extends Component {
-
     use PerPage, Searchable, Sortable;
     use WithoutUrlPagination, WithPagination;
+
+    public $SelectedId;
+
+    public UserForm $form;
 
     public $searchableColumns = ['full_name', 'username'];
 
@@ -27,6 +33,30 @@ class UserDatatable extends Component {
         $query = $this->applySorting($query);
 
         return $query->paginate($this->perPage);
+    }
+
+    public function deleteData($id) {
+        $this->SelectedId = $id;
+
+        sweetalert()
+            ->timer(240000)
+            ->timerProgressBar(false)
+            ->showConfirmButton(true)
+            ->showCancelButton(true)
+            ->warning('Are you sure you want to delete the data ?');
+    }
+
+    #[On('sweetalert:confirmed')]
+    public function onConfirmed() {
+        try {
+            $this->form->destroy($this->SelectedId);
+
+            $this->reset();
+            flash()->success('Data Deleted Successfully.');
+        } catch (Throwable $th) {
+            $this->reset();
+            flash()->success('Data Failed to delete.');
+        }
     }
 
     public function placeholder() {

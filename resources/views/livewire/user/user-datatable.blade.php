@@ -69,8 +69,8 @@
                 <td>{{ $user->updated_at }}</td>
                 <td>
                   <div class="d-flex justify-content-center">
-                    <button class="btn btn-sm btn-warning me-1 my-0"><i class="bi bi-pencil-fill"></i></button>
-                    <button class="btn btn-sm btn-danger me-1 my-0"><i class="bi bi-trash-fill"></i></button>
+                    <a wire:navigate class="btn btn-sm btn-warning me-1 my-0" href="{{ route('user.edit', $user->id) }}"><i class="bi bi-pencil-fill"></i></a>
+                    <a wire:click="deleteData({{ $user->id }})" class="btn btn-sm btn-danger me-1 my-0"><i class="bi bi-trash-fill"></i></a>
                   </div>
                 </td>
               </tr>

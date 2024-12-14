@@ -2,10 +2,9 @@
 
 namespace App\Trait\Datatable;
 
-use Illuminate\Database\Eloquent\Builder;
-
 trait Sortable {
     public $sortColumn = 'id';
+
     public $sortDirection = 'asc';
 
     public function applySorting($query) {

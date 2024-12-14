@@ -2,8 +2,6 @@
 
 namespace App\Trait\Datatable;
 
-use Illuminate\Database\Eloquent\Builder;
-
 trait Searchable {
     public $search = '';
 
@@ -15,6 +13,7 @@ trait Searchable {
                 }
             });
         }
+
         return $query;
     }
 

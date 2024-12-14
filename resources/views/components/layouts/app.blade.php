@@ -26,11 +26,13 @@
         <div id="main-content">
           {{ $slot }}
         </div>
+
         {{-- Footer --}}
         <x-partials.footer />
 
       </div>
     </div>
+
     <script src="{{ asset('storage/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
 
     <script src="{{ asset('storage/assets/compiled/js/app.js') }}"></script>
