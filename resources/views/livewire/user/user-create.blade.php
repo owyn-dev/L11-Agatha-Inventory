@@ -53,6 +53,24 @@
                 </div>
 
                 <div class="col-12">
+                  <fieldset class="form-group">
+                    <label for="role">Role</label>
+                    <select wire:model="form.role" class="form-select @error('form.role') is-invalid @enderror" id="role">
+                      <option value="" disabled selected>Select Role</option>
+                      @foreach ($this->roles as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                      @endforeach
+                    </select>
+                    @error('form.role')
+                      <div class="invalid-feedback">
+                        <i class="bx bx-radio-circle"></i>
+                        {{ $message }}
+                      </div>
+                    @enderror
+                  </fieldset>
+                </div>
+
+                <div class="col-12">
                   <div class="form-group">
                     <label for="password">Password</label>
                     <input wire:model="form.password" class="form-control form-control-lg square @error('form.password') is-invalid @enderror" id="password" type="password" placeholder="Input Password">

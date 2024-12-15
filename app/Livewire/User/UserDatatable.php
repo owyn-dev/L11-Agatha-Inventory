@@ -24,11 +24,16 @@ class UserDatatable extends Component {
 
     public UserForm $form;
 
-    public $searchableColumns = ['full_name', 'username'];
+    public $searchableColumns = ['users.full_name', 'users.username', 'roles.name'];
 
     #[Computed]
     public function users() {
-        $query = User::select('id', 'full_name', 'username', 'created_at', 'updated_at');
+        $query = User::select('users.id', 'users.full_name', 'users.username', 'users.updated_at')
+            ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
+            ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->where('model_has_roles.model_type', User::class)
+            ->with('roles:id,name');
+
         $query = $this->applySearch($query, $this->searchableColumns);
         $query = $this->applySorting($query);
 

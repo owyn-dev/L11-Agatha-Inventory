@@ -5,11 +5,20 @@ namespace App\Livewire\User;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\Attributes\Title;
+use Livewire\Attributes\Computed;
+use Spatie\Permission\Models\Role;
 use App\Livewire\Forms\User\UserForm;
 
 #[Title('Create User')]
 class UserCreate extends Component {
     public UserForm $form;
+
+    #[Computed]
+    public function roles() {
+        $query = Role::pluck('name', 'name');
+
+        return $query;
+    }
 
     public function save() {
         $this->form->store();

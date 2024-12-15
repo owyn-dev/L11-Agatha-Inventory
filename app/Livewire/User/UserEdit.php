@@ -4,12 +4,21 @@ namespace App\Livewire\User;
 
 use App\Models\User;
 use Livewire\Component;
+use Livewire\Attributes\Computed;
+use Spatie\Permission\Models\Role;
 use App\Livewire\Forms\User\UserForm;
 
 class UserEdit extends Component {
     public UserForm $form;
 
     public User $user;
+
+    #[Computed]
+    public function roles() {
+        $query = Role::pluck('name', 'name');
+
+        return $query;
+    }
 
     public function edit() {
         $this->form->update();

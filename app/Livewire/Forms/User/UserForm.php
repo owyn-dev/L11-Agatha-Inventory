@@ -13,6 +13,8 @@ class UserForm extends Form {
 
     public string $username = '';
 
+    public string $role = '';
+
     public string $password = '';
 
     public string $password_confirmation = '';
@@ -22,16 +24,19 @@ class UserForm extends Form {
 
         $this->full_name = $user->full_name;
         $this->username = $user->username;
+        $this->role = $user->getRoleNames()->first();
     }
 
     public function store() {
         $this->validate();
 
-        User::create([
+        $user = User::create([
             'full_name' => $this->full_name,
             'username' => $this->username,
             'password' => $this->password,
         ]);
+
+        $user->assignRole($this->role);
 
         $this->reset();
         $this->resetValidation();
@@ -45,11 +50,13 @@ class UserForm extends Form {
             'username' => $this->username,
         ];
 
-        if ( ! empty($this->password)) {
+
+        if (! empty($this->password)) {
             $dataToUpdate['password'] = $this->password;
         }
 
         $this->user->update($dataToUpdate);
+        $this->user->syncRoles([$this->role]);
 
         $this->reset();
         $this->resetValidation();
@@ -69,6 +76,9 @@ class UserForm extends Form {
             'username' => [
                 'required',
                 Rule::unique('users')->ignore($this->user),
+            ],
+            'role' => [
+                'required',
             ],
         ];
 
